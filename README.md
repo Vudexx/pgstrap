@@ -44,7 +44,7 @@ npm install pgstrap --save-dev
    npm run db:migrate
    ```
 
-6. Generate types and structure:
+6. Generate types and structure without starting a separate PostgreSQL server:
    ```bash
    npm run db:generate
    ```
@@ -55,7 +55,7 @@ npm install pgstrap --save-dev
 
 - `npm run db:migrate` - Run pending migrations
 - `npm run db:reset` - Drop and recreate the database, then run all migrations
-- `npm run db:generate` - Generate types and structure dumps. Use `pgstrap generate --pglite` to run migrations against an in-memory PGlite instance.
+- `npm run db:generate` - Run migrations against in-memory PGlite and generate types and structure dumps. Use `pgstrap generate --no-pglite` to use an externally running PostgreSQL database instead.
 - `npm run db:create-migration` - Create a new migration file
 
 ### Configuration
@@ -96,7 +96,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
 }
 
 export async function down(pgm: MigrationBuilder): Promise<void> {
-  // Code to revert your migration (optional)
+  // Code to revert the migration (optional)
 }
 ```
 
@@ -116,7 +116,6 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       default: pgm.func("current_timestamp"),
     },
   })
-
   pgm.createIndex("users", "username")
 }
 
@@ -142,4 +141,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions, please file an issue on the [GitHub repository](https://github.com/seveibar/pgstrap/issues).
 
-Happy coding with pgstrap! 🚀
+Happy coding with pgstrap!
