@@ -8,11 +8,13 @@ import { dumpTree } from "pg-schema-dump"
 import path from "path"
 import { migrate } from "./migrate"
 
+export const shouldUsePglite = (pglite?: boolean) => pglite !== false
+
 export const generate = async ({
   schemas,
   defaultDatabase,
   dbDir,
-  pglite = false,
+  pglite,
   migrationsDir,
 }: Pick<Context, "schemas" | "defaultDatabase" | "dbDir"> & {
   pglite?: boolean
@@ -21,7 +23,7 @@ export const generate = async ({
   dbDir = dbDir ?? "./src/db"
   migrationsDir = migrationsDir ?? path.join(dbDir, "migrations")
 
-  if (pglite) {
+  if (shouldUsePglite(pglite)) {
     const { PGlite } = await import("@electric-sql/pglite")
     const { fromNodeSocket } = await import("pg-gateway/node")
     const net = await import("node:net")
